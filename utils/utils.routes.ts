@@ -4,7 +4,7 @@ import * as rsa from "./rsa"
 
 export const utilRoutes = express.Router()
 
-utilRoutes.post("/ping", async (req : Request, res : Response) => {
+utilRoutes.get("/ping", async (req : Request, res : Response) => {
     return res.status(StatusCodes.OK).json({"ok": "test"})
 })
 
