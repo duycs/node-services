@@ -55,6 +55,14 @@ const isVerified = (verifiableData: any, signature: any, publicKey: string) => c
 	signature
 )
 
+export const toBase64 = (data: string) => {
+	return Buffer.from(data).toString('base64');
+}
+
+export const toString = (data: string) => {
+	return Buffer.from(data, 'base64').toString('utf-8');
+}
+
 export const encrypt  = (data : string, publicKey: string) => {
     return encryptedData(data, publicKey).toString("base64");
 }

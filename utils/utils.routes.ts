@@ -8,11 +8,25 @@ utilRoutes.get("/ping", async (req : Request, res : Response) => {
     return res.status(StatusCodes.OK).json({"ok": "test"})
 })
 
+utilRoutes.post("/to-string", async (req : Request, res : Response) => {
+    const { data } = req.body;
+
+    return res.status(StatusCodes.OK).json({"data": rsa.toString(data)})
+})
+
+utilRoutes.post("/to-base64", async (req : Request, res : Response) => {
+    const { data } = req.body;
+
+    return res.status(StatusCodes.OK).json({"data": rsa.toBase64(data)})
+})
+
 utilRoutes.post("/rsa/keys", async (req : Request, res : Response) => {
     try {
         const { length } = req.body;
 
-        const data = rsa.genKeys(length);
+        const { publicKey, privateKey } = rsa.genKeys(length);
+
+        const data = { "publicKey": rsa.toBase64(publicKey), "privateKey": rsa.toBase64(privateKey)};
         
         if (!data) {
             return res.status(StatusCodes.BAD_REQUEST).json({message : `Invalid data`})
@@ -28,7 +42,7 @@ utilRoutes.post("/rsa/encrypt", async (req : Request, res : Response) => {
     try {
         const { payload, publicKey } = req.body;
 
-        const data = rsa.encrypt(payload, publicKey);
+        const data = rsa.encrypt(payload, rsa.toString(publicKey));
 
         if (!data) {
             return res.status(StatusCodes.BAD_REQUEST).json({message : `Invalid data`})
@@ -44,7 +58,7 @@ utilRoutes.post("/rsa/decrypt", async (req : Request, res : Response) => {
     try {
         const { payload, privateKey } = req.body
 
-        const data = rsa.decrypt(payload, privateKey);
+        const data = rsa.decrypt(payload, rsa.toString(privateKey));
 
         if (!data) {
             return res.status(StatusCodes.BAD_REQUEST).json({message : `Invalid data`})
@@ -60,7 +74,7 @@ utilRoutes.post("/rsa/sign", async (req : Request, res : Response) => {
     try {
         const { payload, privateKey } = req.body
 
-        const data = rsa.sign(payload, privateKey);
+        const data = rsa.sign(payload, rsa.toString(privateKey));
 
         if (!data) {
             return res.status(StatusCodes.BAD_REQUEST).json({message : `Invalid data`})
@@ -77,9 +91,7 @@ utilRoutes.post("/rsa/verify", async (req : Request, res : Response) => {
     try {
         const { payload, signature, publicKey } = req.body
 
-        console.log(req.body);
-
-        const success = rsa.verify(payload, signature, publicKey);
+        const success = rsa.verify(payload, signature, rsa.toString(publicKey));
 
         if (!success) {
             return res.status(StatusCodes.BAD_REQUEST).json({success: success, message : `Invalid data`})
