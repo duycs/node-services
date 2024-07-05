@@ -5,11 +5,11 @@
 ```npm run dev```
 
 #### Build
-```docker build -t duycs/services .```
+```sudo docker build -t duycs/services . --platform linux/amd64```
 
 #### Docker
-```docker pull duycs/services```
+```sudo docker pull duycs/services```
 
 #### Run
-```docker run --name services  -p 80:80 -d duycs/services```
-
+```sudo docker run --name services  -p 8080:8080 -d duycs/services```
+```sudo ufw allow 8080```
