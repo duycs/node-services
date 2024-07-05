@@ -13,7 +13,7 @@ utilRoutes.post("/rsa/keys", async (req : Request, res : Response) => {
         const { length } = req.body;
 
         const data = await rsa.genKeys(length);
-
+        
         if (!data) {
             return res.status(StatusCodes.BAD_REQUEST).json({message : `Invalid data`})
         }

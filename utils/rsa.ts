@@ -13,17 +13,20 @@ const generateKeys = (length: number) => {
         },
     });
 
-    return data;
+	const publicKey = toBase64(data.publicKey);
+	const privateKey = toBase64(data.privateKey);
+
+	return {publicKey, privateKey};
 }
 
 const encryptedData = (data: any, publicKey: string) => crypto.publicEncrypt(
 	{
 		key: publicKey,
-		padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+		//padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
 		oaepHash: "sha256",
 	},
 	// We convert the data string to a buffer using `Buffer.from`
-	Buffer.from(data)
+	Buffer.from(data, 'base64')
 )
 
 const decryptedData = (encryptedData: any, privateKey: string) =>  crypto.privateDecrypt(

@@ -5,5 +5,5 @@
 ```sudo docker build -t duycs/services .```
 
 ### Run
-```sudo docker run --name services  -p 80:8080 -d duycs/services``
+```sudo docker run --name services  -p 80:80 -d duycs/services``
 
