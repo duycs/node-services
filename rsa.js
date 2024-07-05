@@ -59,10 +59,14 @@ const verifiableData = "this need to be verified"
 // The signature method takes the data we want to sign, the
 // hashing algorithm, and the padding scheme, and generates
 // a signature in the form of bytes
-const signature = crypto.sign("sha256", Buffer.from(verifiableData), {
-	key: privateKey,
-	padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
-})
+const signature = crypto.sign(
+	"sha256", 
+	Buffer.from(verifiableData), 
+	{
+		key: privateKey,
+		padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
+	}
+)
 
 console.log(signature.toString("base64"))
 

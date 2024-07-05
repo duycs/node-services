@@ -1,9 +1,15 @@
 ## Node Services
 ### RSA
 
-### Build
+#### Dev
+```npm run dev```
+
+#### Build
 ```sudo docker build -t duycs/services .```
 
-### Run
-```sudo docker run --name services  -p 80:80 -d duycs/services``
+#### Docker
+```docker pull duycs/services```
+
+#### Run
+```sudo docker run --name services  -p 80:80 -d duycs/services```
 

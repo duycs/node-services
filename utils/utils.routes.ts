@@ -12,7 +12,7 @@ utilRoutes.post("/rsa/keys", async (req : Request, res : Response) => {
     try {
         const { length } = req.body;
 
-        const data = await rsa.genKeys(length);
+        const data = rsa.genKeys(length);
         
         if (!data) {
             return res.status(StatusCodes.BAD_REQUEST).json({message : `Invalid data`})
@@ -28,7 +28,7 @@ utilRoutes.post("/rsa/encrypt", async (req : Request, res : Response) => {
     try {
         const { payload, publicKey } = req.body;
 
-        const data = await rsa.encrypt(payload, publicKey);
+        const data = rsa.encrypt(payload, publicKey);
 
         if (!data) {
             return res.status(StatusCodes.BAD_REQUEST).json({message : `Invalid data`})
@@ -44,7 +44,7 @@ utilRoutes.post("/rsa/decrypt", async (req : Request, res : Response) => {
     try {
         const { payload, privateKey } = req.body
 
-        const data = await rsa.decrypt(payload, privateKey);
+        const data = rsa.decrypt(payload, privateKey);
 
         if (!data) {
             return res.status(StatusCodes.BAD_REQUEST).json({message : `Invalid data`})
@@ -60,7 +60,7 @@ utilRoutes.post("/rsa/sign", async (req : Request, res : Response) => {
     try {
         const { payload, privateKey } = req.body
 
-        const data = await rsa.sign(payload, privateKey);
+        const data = rsa.sign(payload, privateKey);
 
         if (!data) {
             return res.status(StatusCodes.BAD_REQUEST).json({message : `Invalid data`})
@@ -77,10 +77,10 @@ utilRoutes.post("/rsa/verify", async (req : Request, res : Response) => {
     try {
         const { payload, signature, publicKey } = req.body
 
-        const success = await rsa.verify(payload, signature, publicKey);
+        const success = rsa.verify(payload, signature, publicKey);
 
         if (!success) {
-            return res.status(StatusCodes.BAD_REQUEST).json({message : `Invalid data`})
+            return res.status(StatusCodes.BAD_REQUEST).json({success: success, message : `Invalid data`})
         }
 
         return res.status(StatusCodes.OK).json({success})

@@ -13,16 +13,17 @@ const generateKeys = (length: number) => {
         },
     });
 
-	const publicKey = toBase64(data.publicKey);
-	const privateKey = toBase64(data.privateKey);
+	//const publicKey = toBase64(data.publicKey);
+	//const privateKey = toBase64(data.privateKey);
+	//return {publicKey, privateKey};
 
-	return {publicKey, privateKey};
+	return data;
 }
 
 const encryptedData = (data: any, publicKey: string) => crypto.publicEncrypt(
 	{
 		key: publicKey,
-		//padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+		padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
 		oaepHash: "sha256",
 	},
 	// We convert the data string to a buffer using `Buffer.from`
@@ -41,7 +42,9 @@ const decryptedData = (encryptedData: any, privateKey: string) =>  crypto.privat
 	encryptedData
 )
 
-const signature = (verifiableData: any, privateKey: string) => crypto.sign("sha256", Buffer.from(verifiableData), {
+const signature = (verifiableData: any, privateKey: string) => crypto.sign(
+	"sha256", 
+	Buffer.from(verifiableData), {
 	key: privateKey,
 	padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
 })
@@ -56,30 +59,22 @@ const isVerified = (verifiableData: any, signature: any, publicKey: string) => c
 	signature
 )
 
-const dataBase64 = (data: any) => {
-    return Buffer.from(data).toString("base64");
-}
-
 export const encrypt  = (data : string, publicKey: string) => {
-    return dataBase64(encryptedData(data, publicKey));
+    return encryptedData(data, publicKey).toString("base64");
 }
 
 export const decrypt  = (data : string, privateKey: string) => {
-    return decryptedData(data, privateKey).toString();
-}
-
-export const verify  = (data : string, signature : string, publicKey: string) => {
-    return isVerified(data, signature, publicKey);
+    return decryptedData(Buffer.from(data, "base64"), privateKey).toString("base64");
 }
 
 export const sign  = (data : string, privateKey: string) => {
-    return dataBase64(signature(data, privateKey));
+    return signature(data, privateKey).toString("base64");
 }
 
-export const toBase64  = (data : string) => {
-    return dataBase64(data);
+export const verify  = (data : string, signature : string, publicKey: string) => {
+    return isVerified(data, Buffer.from(signature, "base64"), publicKey);
 }
 
-export const genKeys = (length: number) => {
+export const genKeys = (length: number = 2048) => {
     return generateKeys(length);
 }
