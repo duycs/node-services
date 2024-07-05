@@ -5,11 +5,11 @@
 ```npm run dev```
 
 #### Build
-```sudo docker build -t duycs/services .```
+```docker build -t duycs/services .```
 
 #### Docker
 ```docker pull duycs/services```
 
 #### Run
-```sudo docker run --name services  -p 80:80 -d duycs/services```
+```docker run --name services  -p 80:80 -d duycs/services```
 
