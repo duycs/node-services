@@ -77,6 +77,8 @@ utilRoutes.post("/rsa/verify", async (req : Request, res : Response) => {
     try {
         const { payload, signature, publicKey } = req.body
 
+        console.log(req.body);
+
         const success = rsa.verify(payload, signature, publicKey);
 
         if (!success) {

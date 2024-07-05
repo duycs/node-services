@@ -13,10 +13,6 @@ const generateKeys = (length: number) => {
         },
     });
 
-	//const publicKey = toBase64(data.publicKey);
-	//const privateKey = toBase64(data.privateKey);
-	//return {publicKey, privateKey};
-
 	return data;
 }
 
@@ -72,7 +68,11 @@ export const sign  = (data : string, privateKey: string) => {
 }
 
 export const verify  = (data : string, signature : string, publicKey: string) => {
-    return isVerified(data, Buffer.from(signature, "base64"), publicKey);
+	try{
+    	return isVerified(data, Buffer.from(signature, "base64"), publicKey);
+	}catch(error){
+		throw new Error(error);
+	}
 }
 
 export const genKeys = (length: number = 2048) => {
