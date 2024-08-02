@@ -55,6 +55,25 @@ const isVerified = (verifiableData: any, signature: any, publicKey: string) => c
 	signature
 )
 
+// sign same as dart crypto
+export const signature2 = (message: string, privateKey: string) => {
+	const sign = crypto.createSign('SHA256');
+	sign.update(message);
+	sign.end();
+
+	// Generate the signature in base64 format
+	const signature = sign.sign(privateKey, 'base64');
+	return signature;
+}
+
+// verify same as dart crypto
+export const verifySignature = (message: string, signature: string, publicKey: string) => {
+	const verifier = crypto.createVerify('SHA256');
+	verifier.update(message);
+	verifier.end();
+	return verifier.verify(publicKey, signature, 'base64');
+}
+
 export const toBase64 = (data: string) => {
 	return Buffer.from(data).toString('base64');
 }

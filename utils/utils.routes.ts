@@ -74,7 +74,8 @@ utilRoutes.post("/rsa/sign", async (req : Request, res : Response) => {
     try {
         const { payload, privateKey } = req.body
 
-        const data = rsa.sign(payload, rsa.toString(privateKey));
+        //const data = rsa.sign(payload, rsa.toString(privateKey));
+        const data = rsa.signature2(payload, rsa.toString(privateKey));
 
         if (!data) {
             return res.status(StatusCodes.BAD_REQUEST).json({message : `Invalid data`})
@@ -91,7 +92,8 @@ utilRoutes.post("/rsa/verify", async (req : Request, res : Response) => {
     try {
         const { payload, signature, publicKey } = req.body
 
-        const success = rsa.verify(payload, signature, rsa.toString(publicKey));
+        //const success = rsa.verify(payload, signature, rsa.toString(publicKey));
+        const success = rsa.verifySignature(payload, signature, rsa.toString(publicKey));
 
         if (!success) {
             return res.status(StatusCodes.BAD_REQUEST).json({success: success, message : `Invalid data`})
